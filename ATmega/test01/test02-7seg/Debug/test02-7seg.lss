@@ -3,31 +3,31 @@ test02-7seg.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000010  00800100  000001e2  00000276  2**0
+  0 .data         00000010  00800100  000001d6  0000026a  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000001e2  00000000  00000000  00000094  2**1
+  1 .text         000001d6  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000005  00800110  00800110  00000286  2**0
+  2 .bss          00000005  00800110  00800110  0000027a  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000286  2**0
+  3 .comment      00000030  00000000  00000000  0000027a  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000002b8  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000002ac  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000048  00000000  00000000  000002f4  2**0
+  5 .debug_aranges 00000048  00000000  00000000  000002e8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000bbd  00000000  00000000  0000033c  2**0
+  6 .debug_info   00000bf6  00000000  00000000  00000330  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000914  00000000  00000000  00000ef9  2**0
+  7 .debug_abbrev 00000932  00000000  00000000  00000f26  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000003c2  00000000  00000000  0000180d  2**0
+  8 .debug_line   000003bc  00000000  00000000  00001858  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000009c  00000000  00000000  00001bd0  2**2
+  9 .debug_frame  0000009c  00000000  00000000  00001c14  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000435  00000000  00000000  00001c6c  2**0
+ 10 .debug_str    00000444  00000000  00000000  00001cb0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000040d  00000000  00000000  000020a1  2**0
+ 11 .debug_loc    00000409  00000000  00000000  000020f4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000038  00000000  00000000  000024ae  2**0
+ 12 .debug_ranges 00000038  00000000  00000000  000024fd  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -116,7 +116,7 @@ Disassembly of section .text:
   98:	11 e0       	ldi	r17, 0x01	; 1
   9a:	a0 e0       	ldi	r26, 0x00	; 0
   9c:	b1 e0       	ldi	r27, 0x01	; 1
-  9e:	e2 ee       	ldi	r30, 0xE2	; 226
+  9e:	e6 ed       	ldi	r30, 0xD6	; 214
   a0:	f1 e0       	ldi	r31, 0x01	; 1
   a2:	00 e0       	ldi	r16, 0x00	; 0
   a4:	0b bf       	out	0x3b, r16	; 59
@@ -140,8 +140,8 @@ Disassembly of section .text:
   bc:	a5 31       	cpi	r26, 0x15	; 21
   be:	b2 07       	cpc	r27, r18
   c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
-  c2:	72 d0       	rcall	.+228    	; 0x1a8 <main>
-  c4:	8c c0       	rjmp	.+280    	; 0x1de <_exit>
+  c2:	70 d0       	rcall	.+224    	; 0x1a4 <main>
+  c4:	86 c0       	rjmp	.+268    	; 0x1d2 <_exit>
 
 000000c6 <__bad_interrupt>:
   c6:	9c cf       	rjmp	.-200    	; 0x0 <__vectors>
@@ -181,186 +181,179 @@ void seg(int sel, uint8_t c) // c : segment image, sel : chip select
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-  ee:	8f e3       	ldi	r24, 0x3F	; 63
-  f0:	9c e9       	ldi	r25, 0x9C	; 156
-  f2:	01 97       	sbiw	r24, 0x01	; 1
-  f4:	f1 f7       	brne	.-4      	; 0xf2 <seg+0x2a>
-  f6:	00 c0       	rjmp	.+0      	; 0xf8 <seg+0x30>
-  f8:	00 00       	nop
-  fa:	08 95       	ret
+  ee:	85 e0       	ldi	r24, 0x05	; 5
+  f0:	8a 95       	dec	r24
+  f2:	f1 f7       	brne	.-4      	; 0xf0 <seg+0x28>
+  f4:	00 00       	nop
+  f6:	08 95       	ret
 
-000000fc <FND_4>:
-	_delay_ms(10); // 0.01초 간격으로 전환
+000000f8 <FND_4>:
+	_delay_us(1); // 0.01초 간격으로 전환
 }
 void FND_4(char *inf) // segment image 배열
 {
-  fc:	0f 93       	push	r16
-  fe:	1f 93       	push	r17
- 100:	cf 93       	push	r28
- 102:	df 93       	push	r29
- 104:	8c 01       	movw	r16, r24
+  f8:	0f 93       	push	r16
+  fa:	1f 93       	push	r17
+  fc:	cf 93       	push	r28
+  fe:	df 93       	push	r29
+ 100:	8c 01       	movw	r16, r24
 	for(int i = 0 ; i < 4; i++)
- 106:	c0 e0       	ldi	r28, 0x00	; 0
- 108:	d0 e0       	ldi	r29, 0x00	; 0
- 10a:	07 c0       	rjmp	.+14     	; 0x11a <FND_4+0x1e>
+ 102:	c0 e0       	ldi	r28, 0x00	; 0
+ 104:	d0 e0       	ldi	r29, 0x00	; 0
+ 106:	07 c0       	rjmp	.+14     	; 0x116 <FND_4+0x1e>
 		{
 			seg(i, *(inf+i)); //seg(i, inf[i]); 동일
- 10c:	f8 01       	movw	r30, r16
- 10e:	ec 0f       	add	r30, r28
- 110:	fd 1f       	adc	r31, r29
- 112:	60 81       	ld	r22, Z
- 114:	ce 01       	movw	r24, r28
- 116:	d8 df       	rcall	.-80     	; 0xc8 <seg>
+ 108:	f8 01       	movw	r30, r16
+ 10a:	ec 0f       	add	r30, r28
+ 10c:	fd 1f       	adc	r31, r29
+ 10e:	60 81       	ld	r22, Z
+ 110:	ce 01       	movw	r24, r28
+ 112:	da df       	rcall	.-76     	; 0xc8 <seg>
 	PORTD = c; // 숫자 데이터 출력
-	_delay_ms(10); // 0.01초 간격으로 전환
+	_delay_us(1); // 0.01초 간격으로 전환
 }
 void FND_4(char *inf) // segment image 배열
 {
 	for(int i = 0 ; i < 4; i++)
- 118:	21 96       	adiw	r28, 0x01	; 1
- 11a:	c4 30       	cpi	r28, 0x04	; 4
- 11c:	d1 05       	cpc	r29, r1
- 11e:	b4 f3       	brlt	.-20     	; 0x10c <FND_4+0x10>
+ 114:	21 96       	adiw	r28, 0x01	; 1
+ 116:	c4 30       	cpi	r28, 0x04	; 4
+ 118:	d1 05       	cpc	r29, r1
+ 11a:	b4 f3       	brlt	.-20     	; 0x108 <FND_4+0x10>
 		{
 			seg(i, *(inf+i)); //seg(i, inf[i]); 동일
 		}
 }
- 120:	df 91       	pop	r29
- 122:	cf 91       	pop	r28
- 124:	1f 91       	pop	r17
- 126:	0f 91       	pop	r16
- 128:	08 95       	ret
+ 11c:	df 91       	pop	r29
+ 11e:	cf 91       	pop	r28
+ 120:	1f 91       	pop	r17
+ 122:	0f 91       	pop	r16
+ 124:	08 95       	ret
 
-0000012a <Trans>:
+00000126 <Trans>:
 char* Trans(unsigned long num) // 10진 정수 ==> 16진수 문자열 : 56506 ==> 0xDCBA, N4,N3,N2,N1 4096,256,16,1 문자열 다룰땐 안전영역 고려 정적변수영역에 넣어주는게 좋음.
 					 //			 ==> 16진수 segment image 배열
 {
- 12a:	0f 93       	push	r16
- 12c:	1f 93       	push	r17
- 12e:	cf 93       	push	r28
- 130:	df 93       	push	r29
+ 126:	0f 93       	push	r16
+ 128:	1f 93       	push	r17
+ 12a:	cf 93       	push	r28
+ 12c:	df 93       	push	r29
 	int n1 = num % 16;			// A : 문자가 아닌 숫자(10) // 10진수라면은 & 10으로 하면 됨
- 132:	eb 01       	movw	r28, r22
- 134:	cf 70       	andi	r28, 0x0F	; 15
- 136:	dd 27       	eor	r29, r29
+ 12e:	eb 01       	movw	r28, r22
+ 130:	cf 70       	andi	r28, 0x0F	; 15
+ 132:	dd 27       	eor	r29, r29
 	int n2 = (num / 16) % 16;	// B : 문자가 아닌 숫자(11)
- 138:	8b 01       	movw	r16, r22
- 13a:	9c 01       	movw	r18, r24
- 13c:	68 94       	set
- 13e:	13 f8       	bld	r1, 3
- 140:	36 95       	lsr	r19
- 142:	27 95       	ror	r18
- 144:	17 95       	ror	r17
- 146:	07 95       	ror	r16
- 148:	16 94       	lsr	r1
- 14a:	d1 f7       	brne	.-12     	; 0x140 <Trans+0x16>
- 14c:	d8 01       	movw	r26, r16
- 14e:	af 70       	andi	r26, 0x0F	; 15
- 150:	bb 27       	eor	r27, r27
+ 134:	8b 01       	movw	r16, r22
+ 136:	9c 01       	movw	r18, r24
+ 138:	68 94       	set
+ 13a:	13 f8       	bld	r1, 3
+ 13c:	36 95       	lsr	r19
+ 13e:	27 95       	ror	r18
+ 140:	17 95       	ror	r17
+ 142:	07 95       	ror	r16
+ 144:	16 94       	lsr	r1
+ 146:	d1 f7       	brne	.-12     	; 0x13c <Trans+0x16>
+ 148:	d8 01       	movw	r26, r16
+ 14a:	af 70       	andi	r26, 0x0F	; 15
+ 14c:	bb 27       	eor	r27, r27
 	int n3 = (num / 256) % 16;	// C : 문자가 아닌 숫자(12)
- 152:	07 2f       	mov	r16, r23
- 154:	18 2f       	mov	r17, r24
- 156:	29 2f       	mov	r18, r25
- 158:	33 27       	eor	r19, r19
- 15a:	f8 01       	movw	r30, r16
- 15c:	ef 70       	andi	r30, 0x0F	; 15
- 15e:	ff 27       	eor	r31, r31
+ 14e:	07 2f       	mov	r16, r23
+ 150:	18 2f       	mov	r17, r24
+ 152:	29 2f       	mov	r18, r25
+ 154:	33 27       	eor	r19, r19
+ 156:	f8 01       	movw	r30, r16
+ 158:	ef 70       	andi	r30, 0x0F	; 15
+ 15a:	ff 27       	eor	r31, r31
 	int n4 = (num / 4096);		// D : 문자가 아닌 숫자(13)
- 160:	ab 01       	movw	r20, r22
- 162:	bc 01       	movw	r22, r24
- 164:	03 2e       	mov	r0, r19
- 166:	3c e0       	ldi	r19, 0x0C	; 12
- 168:	76 95       	lsr	r23
- 16a:	67 95       	ror	r22
- 16c:	57 95       	ror	r21
- 16e:	47 95       	ror	r20
- 170:	3a 95       	dec	r19
- 172:	d1 f7       	brne	.-12     	; 0x168 <Trans+0x3e>
- 174:	30 2d       	mov	r19, r0
+ 15c:	ab 01       	movw	r20, r22
+ 15e:	bc 01       	movw	r22, r24
+ 160:	03 2e       	mov	r0, r19
+ 162:	3c e0       	ldi	r19, 0x0C	; 12
+ 164:	76 95       	lsr	r23
+ 166:	67 95       	ror	r22
+ 168:	57 95       	ror	r21
+ 16a:	47 95       	ror	r20
+ 16c:	3a 95       	dec	r19
+ 16e:	d1 f7       	brne	.-12     	; 0x164 <Trans+0x3e>
+ 170:	30 2d       	mov	r19, r0
 	arr[0] = digit[n1];
- 176:	c0 50       	subi	r28, 0x00	; 0
- 178:	df 4f       	sbci	r29, 0xFF	; 255
- 17a:	28 81       	ld	r18, Y
- 17c:	c0 e1       	ldi	r28, 0x10	; 16
- 17e:	d1 e0       	ldi	r29, 0x01	; 1
- 180:	28 83       	st	Y, r18
+ 172:	c0 50       	subi	r28, 0x00	; 0
+ 174:	df 4f       	sbci	r29, 0xFF	; 255
+ 176:	28 81       	ld	r18, Y
+ 178:	c0 e1       	ldi	r28, 0x10	; 16
+ 17a:	d1 e0       	ldi	r29, 0x01	; 1
+ 17c:	28 83       	st	Y, r18
 	arr[1] = digit[n2];
- 182:	a0 50       	subi	r26, 0x00	; 0
- 184:	bf 4f       	sbci	r27, 0xFF	; 255
- 186:	2c 91       	ld	r18, X
- 188:	29 83       	std	Y+1, r18	; 0x01
+ 17e:	a0 50       	subi	r26, 0x00	; 0
+ 180:	bf 4f       	sbci	r27, 0xFF	; 255
+ 182:	2c 91       	ld	r18, X
+ 184:	29 83       	std	Y+1, r18	; 0x01
 	arr[2] = digit[n3];
- 18a:	e0 50       	subi	r30, 0x00	; 0
- 18c:	ff 4f       	sbci	r31, 0xFF	; 255
- 18e:	20 81       	ld	r18, Z
- 190:	2a 83       	std	Y+2, r18	; 0x02
+ 186:	e0 50       	subi	r30, 0x00	; 0
+ 188:	ff 4f       	sbci	r31, 0xFF	; 255
+ 18a:	20 81       	ld	r18, Z
+ 18c:	2a 83       	std	Y+2, r18	; 0x02
 	arr[3] = digit[n4];
- 192:	fa 01       	movw	r30, r20
- 194:	e0 50       	subi	r30, 0x00	; 0
- 196:	ff 4f       	sbci	r31, 0xFF	; 255
- 198:	80 81       	ld	r24, Z
- 19a:	8b 83       	std	Y+3, r24	; 0x03
+ 18e:	fa 01       	movw	r30, r20
+ 190:	e0 50       	subi	r30, 0x00	; 0
+ 192:	ff 4f       	sbci	r31, 0xFF	; 255
+ 194:	80 81       	ld	r24, Z
+ 196:	8b 83       	std	Y+3, r24	; 0x03
 	// FND_4(arr); // main 함수 내에서 해도 됨.
 	return arr;
 }
- 19c:	ce 01       	movw	r24, r28
- 19e:	df 91       	pop	r29
- 1a0:	cf 91       	pop	r28
- 1a2:	1f 91       	pop	r17
- 1a4:	0f 91       	pop	r16
- 1a6:	08 95       	ret
+ 198:	ce 01       	movw	r24, r28
+ 19a:	df 91       	pop	r29
+ 19c:	cf 91       	pop	r28
+ 19e:	1f 91       	pop	r17
+ 1a0:	0f 91       	pop	r16
+ 1a2:	08 95       	ret
 
-000001a8 <main>:
-int main(void)
+000001a4 <main>:
 {
     // Replace with your application code
 		unsigned long j = 0;
 		// int i,j = 0;
-		DDRB = 0x07; // 하위 3 bit 0000 0111
- 1a8:	87 e0       	ldi	r24, 0x07	; 7
- 1aa:	87 bb       	out	0x17, r24	; 23
+		// DDRB = 0x07; // 하위 3 bit 0000 0111
 		DDRD = 0xFF;
- 1ac:	8f ef       	ldi	r24, 0xFF	; 255
- 1ae:	81 bb       	out	0x11, r24	; 17
+ 1a4:	8f ef       	ldi	r24, 0xFF	; 255
+ 1a6:	81 bb       	out	0x11, r24	; 17
 		DDRC = 0x0F;	
- 1b0:	8f e0       	ldi	r24, 0x0F	; 15
- 1b2:	84 bb       	out	0x14, r24	; 20
+ 1a8:	8f e0       	ldi	r24, 0x0F	; 15
+ 1aa:	84 bb       	out	0x14, r24	; 20
 	return arr;
 }
 int main(void)
 {
     // Replace with your application code
 		unsigned long j = 0;
- 1b4:	60 e0       	ldi	r22, 0x00	; 0
- 1b6:	70 e0       	ldi	r23, 0x00	; 0
- 1b8:	cb 01       	movw	r24, r22
+ 1ac:	60 e0       	ldi	r22, 0x00	; 0
+ 1ae:	70 e0       	ldi	r23, 0x00	; 0
+ 1b0:	cb 01       	movw	r24, r22
 		DDRC = 0x0F;	
     while (1) 
     {
 		//TogglePinA(2,__delay_t); // PORTA의 0번째 bit를 점멸
 		//LED(&PORTD,1); // PORTD의 0번째 bit를 점멸
 		FND_4(Trans(j++));
- 1ba:	6b 01       	movw	r12, r22
- 1bc:	7c 01       	movw	r14, r24
- 1be:	2f ef       	ldi	r18, 0xFF	; 255
- 1c0:	c2 1a       	sub	r12, r18
- 1c2:	d2 0a       	sbc	r13, r18
- 1c4:	e2 0a       	sbc	r14, r18
- 1c6:	f2 0a       	sbc	r15, r18
- 1c8:	b0 df       	rcall	.-160    	; 0x12a <Trans>
- 1ca:	98 df       	rcall	.-208    	; 0xfc <FND_4>
- 1cc:	8f e3       	ldi	r24, 0x3F	; 63
- 1ce:	9c e9       	ldi	r25, 0x9C	; 156
- 1d0:	01 97       	sbiw	r24, 0x01	; 1
- 1d2:	f1 f7       	brne	.-4      	; 0x1d0 <main+0x28>
- 1d4:	00 c0       	rjmp	.+0      	; 0x1d6 <main+0x2e>
- 1d6:	00 00       	nop
- 1d8:	c7 01       	movw	r24, r14
- 1da:	b6 01       	movw	r22, r12
- 1dc:	ee cf       	rjmp	.-36     	; 0x1ba <main+0x12>
+ 1b2:	6b 01       	movw	r12, r22
+ 1b4:	7c 01       	movw	r14, r24
+ 1b6:	2f ef       	ldi	r18, 0xFF	; 255
+ 1b8:	c2 1a       	sub	r12, r18
+ 1ba:	d2 0a       	sbc	r13, r18
+ 1bc:	e2 0a       	sbc	r14, r18
+ 1be:	f2 0a       	sbc	r15, r18
+ 1c0:	b2 df       	rcall	.-156    	; 0x126 <Trans>
+ 1c2:	9a df       	rcall	.-204    	; 0xf8 <FND_4>
+ 1c4:	8a e3       	ldi	r24, 0x3A	; 58
+ 1c6:	8a 95       	dec	r24
+ 1c8:	f1 f7       	brne	.-4      	; 0x1c6 <main+0x22>
+ 1ca:	00 c0       	rjmp	.+0      	; 0x1cc <main+0x28>
+ 1cc:	c7 01       	movw	r24, r14
+ 1ce:	b6 01       	movw	r22, r12
+ 1d0:	f0 cf       	rjmp	.-32     	; 0x1b2 <main+0xe>
 
-000001de <_exit>:
- 1de:	f8 94       	cli
+000001d2 <_exit>:
+ 1d2:	f8 94       	cli
 
-000001e0 <__stop_program>:
- 1e0:	ff cf       	rjmp	.-2      	; 0x1e0 <__stop_program>
+000001d4 <__stop_program>:
+ 1d4:	ff cf       	rjmp	.-2      	; 0x1d4 <__stop_program>

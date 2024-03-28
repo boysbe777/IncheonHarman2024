@@ -9,6 +9,10 @@ Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "test02-7seg", "test02-7seg\
 EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "test03-interrupt", "test03-interrupt\test03-interrupt.cproj", "{460386EA-D81A-4FB5-9FF1-7AF7E2368E55}"
 EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "test04-Timer", "test04-Timer\test04-Timer.cproj", "{9BEE674C-3373-434C-8633-7C70A54520AF}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "Quiz(kitchen)", "Quiz(kitchen)\Quiz(kitchen).cproj", "{4365BCDC-2F54-45FB-806B-4A3604025F8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -27,6 +31,14 @@ Global
 		{460386EA-D81A-4FB5-9FF1-7AF7E2368E55}.Debug|AVR.Build.0 = Debug|AVR
 		{460386EA-D81A-4FB5-9FF1-7AF7E2368E55}.Release|AVR.ActiveCfg = Release|AVR
 		{460386EA-D81A-4FB5-9FF1-7AF7E2368E55}.Release|AVR.Build.0 = Release|AVR
+		{9BEE674C-3373-434C-8633-7C70A54520AF}.Debug|AVR.ActiveCfg = Debug|AVR
+		{9BEE674C-3373-434C-8633-7C70A54520AF}.Debug|AVR.Build.0 = Debug|AVR
+		{9BEE674C-3373-434C-8633-7C70A54520AF}.Release|AVR.ActiveCfg = Release|AVR
+		{9BEE674C-3373-434C-8633-7C70A54520AF}.Release|AVR.Build.0 = Release|AVR
+		{4365BCDC-2F54-45FB-806B-4A3604025F8F}.Debug|AVR.ActiveCfg = Debug|AVR
+		{4365BCDC-2F54-45FB-806B-4A3604025F8F}.Debug|AVR.Build.0 = Debug|AVR
+		{4365BCDC-2F54-45FB-806B-4A3604025F8F}.Release|AVR.ActiveCfg = Release|AVR
+		{4365BCDC-2F54-45FB-806B-4A3604025F8F}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

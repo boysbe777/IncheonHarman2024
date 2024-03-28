@@ -1,22 +1,23 @@
 /*
- * test03-interrupt.c
+ * Quiz(kitchen).c
  *
- * Created: 2024-03-27 오후 12:20:24
+ * Created: 2024-03-28 오후 4:49:25
  * Author : boysb
- */
-// #define F_CPU 16000000L // 빼먹으면 곤란하다. 없으면 1M로 설정함. test04-Timer myHeader.h로 이동 함.
+ */ 
+#include "myHeader.h"
 #include <avr/io.h>
 #include <avr/delay.h>
 #include <avr/interrupt.h>
+
 #define __delay_t 500
 #define OPMODEMAX	3
 #define STATE_MAX	3
 
-extern char* Disp(unsigned long num); // 정석은 이렇게 해야 함. Segment.c와 분리해서 사용 되기 때문에.
+volatile int opmode = 0, state = 0;
 
-volatile int opmode = 0, state = 0; // 볼레타일, 컴파일러에 의한 최적화 금지
+unsigned long cnt = 0, tcnt = 0;
 
-/* void LED_blink() {
+void LED_blink() {
 	// LED 점멸 함수
 	for (int i = 0; i < 5; i++) {
 		PORTB |= (1 << PB0); // LED ON
@@ -24,40 +25,41 @@ volatile int opmode = 0, state = 0; // 볼레타일, 컴파일러에 의한 최�
 		PORTB &= ~(1 << PB0); // LED OFF
 		_delay_ms(100); // 100ms 대기
 	}
-} */
-
+}
 int main(void)
 {
-    /* Replace with your application code */
-	// 7-Segment 사용 : 4 Module - C type
-	// Pin assign : PDx - Segment Image, PCx - Module Select
-	// Interrupt 사용 : INT4 ~ INT6 (External Interrupt) 상위 Digit 7654 3210
-	// Pin assign : PE4 ~ PE6
-	DDRD = 0xFF;
-	DDRC = 0x0F;
-	/* DDRB |= (1 << PB0); // LED 핀을 출력으로 설정 */
-	
-	// 인터럽트 설정
-	EIMSK = 0x70; // 2진수 표현 0111 0000
-	EICRB = 0x2a; // 2진수 표현 0010 1010
-	SREG |= 0x80; // status Register - 인터럽트 허용, 상태 레지스터 값 셋팅, SREG에 빨간줄이 가도 돌아가는데 상관없음 열이 없어도 가능함.
-	sei(); // set interrupt - 인터럽트 시작
-	
 	long t = 0;
-    while (1) 
-    {
+	SegPort(&PORTD, &PORTC);
+	DDRD = 0xFF; // Segment 제어를 위한 포트레지스터, 세그먼트 제어 핀 8개를 출력으로 설정
+	DDRC = 0x0F; // Segment 제어를 위한 포트레지스터, 자릿수 선택 핀 4개를 출력으로 설정
+	//DDRB |= (1 << PB0); // LED를 출력
+	DDRE = 0x8F; // PE 4,5,6 입력으로 설정
+	//EIMSK = 0x70; // PE4,5,6 설정을 위해 0111 0000 설정 됨.
+	//EICRB = 0x2a; // PE4,5,6 하강에지시 동작을 시키기 위해 0010 1010 이 됨
+	TIMSK |= 0x01; // 2진수 0000 0001 - Timer 0 TCNT Overflow interrupt, page 297 (8bit)
+	TCCR0 = 0x04;  // 분주비(Pre-Scaler) 64, page 296, |= 해줘도 됨. 주기를 결정하기 위해 사용. Timer 0
+	SREG |= 0x80;
+	sei();
+	while (1)
+	    {
+		    if(cnt >= 0x10000) cnt = 0;
+		    SegDisp(cnt);
+	    }
+	/*while (1)
+	{
 		switch(opmode) // 정해져 있는 opmode 대해 진행
 		{
-			case 0 : // reset & wait
+			case 0 : // start & stop & restart
 			t = 0; break;
-			/* case 1 : // counter start
+			case 1 : // setting
 			t++;
-			if (t >= 10) {
+			if (t >= 10) 
+			{
 				LED_blink(); // 설정 시간에 도달하면 LED를 점멸시킴
 				opmode = 0; // opmode를 0으로 설정하여 타이머를 재설정할 수 있도록 함
 			}
-			break; */
-			case 2 : // counter stop
+			break;
+			case 2 : // 자리이동
 			break;
 			default : break;
 		}
@@ -69,7 +71,8 @@ int main(void)
 		_delay_ms(15);
 		Disp(t);
 		_delay_ms(13);
-    }
+	}*/
+
 }
 ISR(INT4_vect) // INT4 4번 인터럽트 처리 루틴 : sw1
 {
@@ -91,12 +94,12 @@ ISR(INT6_vect) // INT6 6번 인터럽트 처리 루틴 : 버튼 3
 {
 	opmode = 0; // 설정 초기화
 }
-/*ISR(INT5_vect) // INT5 5번 인터럽트 처리 루틴 : sw2
+ISR(TIMER0_OVF_vect)
 {
-	state++;
-	if(state >= STATE_MAX) state = 0;
+	tcnt++;
+	if(tcnt >= 1000)
+	{
+		cnt++; tcnt = 0;
+	}
 }
-ISR(INT6_vect) // INT5 6번 인터럽트 처리 루틴 : sw3
-{
-	
-}*/
+

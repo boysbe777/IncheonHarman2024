@@ -3,31 +3,31 @@ test03-interrupt.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000012  00800100  00000338  000003cc  2**0
+  0 .data         00000012  00800100  00000334  000003c8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000338  00000000  00000000  00000094  2**1
+  1 .text         00000334  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000009  00800112  00800112  000003de  2**0
+  2 .bss          00000007  00800112  00800112  000003da  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000003de  2**0
+  3 .comment      00000030  00000000  00000000  000003da  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000410  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000040c  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000050  00000000  00000000  0000044c  2**0
+  5 .debug_aranges 00000068  00000000  00000000  00000448  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000bcf  00000000  00000000  0000049c  2**0
+  6 .debug_info   00000c8b  00000000  00000000  000004b0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000008f0  00000000  00000000  0000106b  2**0
+  7 .debug_abbrev 000009da  00000000  00000000  0000113b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000045f  00000000  00000000  0000195b  2**0
+  8 .debug_line   00000547  00000000  00000000  00001b15  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000000ec  00000000  00000000  00001dbc  2**2
+  9 .debug_frame  00000100  00000000  00000000  0000205c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000460  00000000  00000000  00001ea8  2**0
+ 10 .debug_str    0000046f  00000000  00000000  0000215c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000439  00000000  00000000  00002308  2**0
+ 11 .debug_loc    00000409  00000000  00000000  000025cb  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000040  00000000  00000000  00002741  2**0
+ 12 .debug_ranges 00000048  00000000  00000000  000029d4  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -43,11 +43,11 @@ Disassembly of section .text:
    e:	00 00       	nop
   10:	5a c0       	rjmp	.+180    	; 0xc6 <__bad_interrupt>
   12:	00 00       	nop
-  14:	43 c1       	rjmp	.+646    	; 0x29c <__vector_5>
+  14:	37 c1       	rjmp	.+622    	; 0x284 <__vector_5>
   16:	00 00       	nop
-  18:	62 c1       	rjmp	.+708    	; 0x2de <__vector_6>
+  18:	56 c1       	rjmp	.+684    	; 0x2c6 <__vector_6>
   1a:	00 00       	nop
-  1c:	81 c1       	rjmp	.+770    	; 0x320 <__vector_7>
+  1c:	7b c1       	rjmp	.+758    	; 0x314 <__vector_7>
   1e:	00 00       	nop
   20:	52 c0       	rjmp	.+164    	; 0xc6 <__bad_interrupt>
   22:	00 00       	nop
@@ -116,7 +116,7 @@ Disassembly of section .text:
   98:	11 e0       	ldi	r17, 0x01	; 1
   9a:	a0 e0       	ldi	r26, 0x00	; 0
   9c:	b1 e0       	ldi	r27, 0x01	; 1
-  9e:	e8 e3       	ldi	r30, 0x38	; 56
+  9e:	e4 e3       	ldi	r30, 0x34	; 52
   a0:	f3 e0       	ldi	r31, 0x03	; 3
   a2:	00 e0       	ldi	r16, 0x00	; 0
   a4:	0b bf       	out	0x3b, r16	; 59
@@ -137,18 +137,18 @@ Disassembly of section .text:
   ba:	1d 92       	st	X+, r1
 
 000000bc <.do_clear_bss_start>:
-  bc:	ab 31       	cpi	r26, 0x1B	; 27
+  bc:	a9 31       	cpi	r26, 0x19	; 25
   be:	b2 07       	cpc	r27, r18
   c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
   c2:	a7 d0       	rcall	.+334    	; 0x212 <main>
-  c4:	37 c1       	rjmp	.+622    	; 0x334 <_exit>
+  c4:	35 c1       	rjmp	.+618    	; 0x330 <_exit>
 
 000000c6 <__bad_interrupt>:
   c6:	9c cf       	rjmp	.-200    	; 0x0 <__vectors>
 
 000000c8 <seg>:
+uint8_t digit[]={0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x27, 0x7F, 0x67, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71};
 char arr[5];
-volatile int opmode = 0, state = 0; // 볼레타일, 컴파일러에 의한 최적화 금지
 
 void seg(int sel, uint8_t c) // c : segment image, sel : chip select
 {
@@ -236,6 +236,10 @@ void FND_4(char *inf) // segment image 배열
  130:	08 95       	ret
 
 00000132 <Disp>:
+		PORTB &= ~(1 << PB0); // LED OFF
+		_delay_ms(100); // 100ms 대기
+	}
+}*/
 char* Disp(unsigned long num) // 10진 정수 ==> 16진수 문자열 : 56506 ==> 0xDCBA, 4 digit 16진수 segment 출력
 {
  132:	ef 92       	push	r14
@@ -292,7 +296,7 @@ char* Disp(unsigned long num) // 10진 정수 ==> 16진수 문자열 : 56506 ==>
  18c:	7e 4f       	sbci	r23, 0xFE	; 254
  18e:	fb 01       	movw	r30, r22
  190:	60 81       	ld	r22, Z
- 192:	46 e1       	ldi	r20, 0x16	; 22
+ 192:	44 e1       	ldi	r20, 0x14	; 20
  194:	51 e0       	ldi	r21, 0x01	; 1
  196:	fa 01       	movw	r30, r20
  198:	60 83       	st	Z, r22
@@ -347,12 +351,11 @@ char* Disp(unsigned long num) // 10진 정수 ==> 16진수 문자열 : 56506 ==>
  1f2:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <__DATA_REGION_ORIGIN__+0x1>
  1f6:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
 	FND_4(arr);
- 1fa:	86 e1       	ldi	r24, 0x16	; 22
+ 1fa:	84 e1       	ldi	r24, 0x14	; 20
  1fc:	91 e0       	ldi	r25, 0x01	; 1
  1fe:	78 df       	rcall	.-272    	; 0xf0 <FND_4>
 	return arr;
-}
- 200:	86 e1       	ldi	r24, 0x16	; 22
+ 200:	84 e1       	ldi	r24, 0x14	; 20
  202:	91 e0       	ldi	r25, 0x01	; 1
  204:	df 91       	pop	r29
  206:	cf 91       	pop	r28
@@ -374,6 +377,7 @@ char* Disp(unsigned long num) // 10진 정수 ==> 16진수 문자열 : 56506 ==>
 	DDRC = 0x0F;
  216:	8f e0       	ldi	r24, 0x0F	; 15
  218:	84 bb       	out	0x14, r24	; 20
+	/* DDRB |= (1 << PB0); // LED 핀을 출력으로 설정 */
 	
 	// 인터럽트 설정
 	EIMSK = 0x70; // 2진수 표현 0111 0000
@@ -390,172 +394,164 @@ char* Disp(unsigned long num) // 10진 정수 ==> 16진수 문자열 : 56506 ==>
  228:	78 94       	sei
 	
 	long t = 0;
- 22a:	c1 2c       	mov	r12, r1
- 22c:	d1 2c       	mov	r13, r1
- 22e:	76 01       	movw	r14, r12
     while (1) 
     {
 		switch(opmode) // 정해져 있는 opmode 대해 진행
- 230:	80 91 14 01 	lds	r24, 0x0114	; 0x800114 <opmode>
- 234:	90 91 15 01 	lds	r25, 0x0115	; 0x800115 <opmode+0x1>
- 238:	00 97       	sbiw	r24, 0x00	; 0
- 23a:	41 f0       	breq	.+16     	; 0x24c <main+0x3a>
- 23c:	01 97       	sbiw	r24, 0x01	; 1
- 23e:	49 f4       	brne	.+18     	; 0x252 <main+0x40>
-		{
-			case 0 : // reset & wait
-				t = 0; break;
-			case 1 : // counter start
-				t++; break;
- 240:	8f ef       	ldi	r24, 0xFF	; 255
- 242:	c8 1a       	sub	r12, r24
- 244:	d8 0a       	sbc	r13, r24
- 246:	e8 0a       	sbc	r14, r24
- 248:	f8 0a       	sbc	r15, r24
- 24a:	03 c0       	rjmp	.+6      	; 0x252 <main+0x40>
-    while (1) 
-    {
-		switch(opmode) // 정해져 있는 opmode 대해 진행
-		{
-			case 0 : // reset & wait
-				t = 0; break;
- 24c:	c1 2c       	mov	r12, r1
- 24e:	d1 2c       	mov	r13, r1
- 250:	76 01       	movw	r14, r12
-				t++; break;
+ 22a:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <__data_end>
+ 22e:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <__data_end+0x1>
+			break; */
 			case 2 : // counter stop
-				break;
-			default : break;				
+			break;
+			default : break;
 		}
 		Disp(t);
- 252:	c7 01       	movw	r24, r14
- 254:	b6 01       	movw	r22, r12
- 256:	6d df       	rcall	.-294    	; 0x132 <Disp>
- 258:	8f e5       	ldi	r24, 0x5F	; 95
- 25a:	9a ee       	ldi	r25, 0xEA	; 234
- 25c:	01 97       	sbiw	r24, 0x01	; 1
- 25e:	f1 f7       	brne	.-4      	; 0x25c <main+0x4a>
- 260:	00 c0       	rjmp	.+0      	; 0x262 <main+0x50>
- 262:	00 00       	nop
+ 232:	60 e0       	ldi	r22, 0x00	; 0
+ 234:	70 e0       	ldi	r23, 0x00	; 0
+ 236:	cb 01       	movw	r24, r22
+ 238:	7c df       	rcall	.-264    	; 0x132 <Disp>
+ 23a:	85 ea       	ldi	r24, 0xA5	; 165
+ 23c:	9e e0       	ldi	r25, 0x0E	; 14
+ 23e:	01 97       	sbiw	r24, 0x01	; 1
+ 240:	f1 f7       	brne	.-4      	; 0x23e <main+0x2c>
+ 242:	00 c0       	rjmp	.+0      	; 0x244 <main+0x32>
+ 244:	00 00       	nop
 		_delay_ms(15);
 		Disp(t);
- 264:	c7 01       	movw	r24, r14
- 266:	b6 01       	movw	r22, r12
- 268:	64 df       	rcall	.-312    	; 0x132 <Disp>
- 26a:	8f e5       	ldi	r24, 0x5F	; 95
- 26c:	9a ee       	ldi	r25, 0xEA	; 234
- 26e:	01 97       	sbiw	r24, 0x01	; 1
- 270:	f1 f7       	brne	.-4      	; 0x26e <main+0x5c>
- 272:	00 c0       	rjmp	.+0      	; 0x274 <main+0x62>
- 274:	00 00       	nop
+ 246:	60 e0       	ldi	r22, 0x00	; 0
+ 248:	70 e0       	ldi	r23, 0x00	; 0
+ 24a:	cb 01       	movw	r24, r22
+ 24c:	72 df       	rcall	.-284    	; 0x132 <Disp>
+ 24e:	85 ea       	ldi	r24, 0xA5	; 165
+ 250:	9e e0       	ldi	r25, 0x0E	; 14
+ 252:	01 97       	sbiw	r24, 0x01	; 1
+ 254:	f1 f7       	brne	.-4      	; 0x252 <main+0x40>
+ 256:	00 c0       	rjmp	.+0      	; 0x258 <main+0x46>
+ 258:	00 00       	nop
 		_delay_ms(15);
 		Disp(t);
- 276:	c7 01       	movw	r24, r14
- 278:	b6 01       	movw	r22, r12
- 27a:	5b df       	rcall	.-330    	; 0x132 <Disp>
- 27c:	8f e5       	ldi	r24, 0x5F	; 95
- 27e:	9a ee       	ldi	r25, 0xEA	; 234
- 280:	01 97       	sbiw	r24, 0x01	; 1
- 282:	f1 f7       	brne	.-4      	; 0x280 <main+0x6e>
- 284:	00 c0       	rjmp	.+0      	; 0x286 <main+0x74>
+ 25a:	60 e0       	ldi	r22, 0x00	; 0
+ 25c:	70 e0       	ldi	r23, 0x00	; 0
+ 25e:	cb 01       	movw	r24, r22
+ 260:	68 df       	rcall	.-304    	; 0x132 <Disp>
+ 262:	85 ea       	ldi	r24, 0xA5	; 165
+ 264:	9e e0       	ldi	r25, 0x0E	; 14
+ 266:	01 97       	sbiw	r24, 0x01	; 1
+ 268:	f1 f7       	brne	.-4      	; 0x266 <main+0x54>
+ 26a:	00 c0       	rjmp	.+0      	; 0x26c <main+0x5a>
+ 26c:	00 00       	nop
 		_delay_ms(15);
 		Disp(t);
- 286:	00 00       	nop
- 288:	c7 01       	movw	r24, r14
- 28a:	b6 01       	movw	r22, r12
- 28c:	52 df       	rcall	.-348    	; 0x132 <Disp>
- 28e:	8f e1       	ldi	r24, 0x1F	; 31
- 290:	9b ec       	ldi	r25, 0xCB	; 203
- 292:	01 97       	sbiw	r24, 0x01	; 1
- 294:	f1 f7       	brne	.-4      	; 0x292 <main+0x80>
- 296:	00 c0       	rjmp	.+0      	; 0x298 <main+0x86>
- 298:	00 00       	nop
- 29a:	ca cf       	rjmp	.-108    	; 0x230 <main+0x1e>
+ 26e:	60 e0       	ldi	r22, 0x00	; 0
+ 270:	70 e0       	ldi	r23, 0x00	; 0
+ 272:	cb 01       	movw	r24, r22
+ 274:	5e df       	rcall	.-324    	; 0x132 <Disp>
+ 276:	81 eb       	ldi	r24, 0xB1	; 177
+ 278:	9c e0       	ldi	r25, 0x0C	; 12
+ 27a:	01 97       	sbiw	r24, 0x01	; 1
+ 27c:	f1 f7       	brne	.-4      	; 0x27a <main+0x68>
+ 27e:	00 c0       	rjmp	.+0      	; 0x280 <main+0x6e>
+ 280:	00 00       	nop
+ 282:	d3 cf       	rjmp	.-90     	; 0x22a <main+0x18>
 
-0000029c <__vector_5>:
+00000284 <__vector_5>:
 		_delay_ms(13);
     }
 }
 ISR(INT4_vect) // INT4 4번 인터럽트 처리 루틴 : sw1
 {
- 29c:	1f 92       	push	r1
- 29e:	0f 92       	push	r0
- 2a0:	0f b6       	in	r0, 0x3f	; 63
- 2a2:	0f 92       	push	r0
- 2a4:	11 24       	eor	r1, r1
- 2a6:	8f 93       	push	r24
- 2a8:	9f 93       	push	r25
+ 284:	1f 92       	push	r1
+ 286:	0f 92       	push	r0
+ 288:	0f b6       	in	r0, 0x3f	; 63
+ 28a:	0f 92       	push	r0
+ 28c:	11 24       	eor	r1, r1
+ 28e:	8f 93       	push	r24
+ 290:	9f 93       	push	r25
 	opmode++;
- 2aa:	80 91 14 01 	lds	r24, 0x0114	; 0x800114 <opmode>
- 2ae:	90 91 15 01 	lds	r25, 0x0115	; 0x800115 <opmode+0x1>
- 2b2:	01 96       	adiw	r24, 0x01	; 1
- 2b4:	90 93 15 01 	sts	0x0115, r25	; 0x800115 <opmode+0x1>
- 2b8:	80 93 14 01 	sts	0x0114, r24	; 0x800114 <opmode>
+ 292:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <__data_end>
+ 296:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <__data_end+0x1>
+ 29a:	01 96       	adiw	r24, 0x01	; 1
+ 29c:	90 93 13 01 	sts	0x0113, r25	; 0x800113 <__data_end+0x1>
+ 2a0:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <__data_end>
 	if(opmode >= OPMODEMAX) opmode = 0; // 직접 들어간거는 상수 처리 모드가 증가 하면 증가 해야 됨. opmode >= 3과 같이 직접 넣지 않도록 하는게 좋음.
- 2bc:	80 91 14 01 	lds	r24, 0x0114	; 0x800114 <opmode>
- 2c0:	90 91 15 01 	lds	r25, 0x0115	; 0x800115 <opmode+0x1>
- 2c4:	03 97       	sbiw	r24, 0x03	; 3
- 2c6:	24 f0       	brlt	.+8      	; 0x2d0 <__vector_5+0x34>
- 2c8:	10 92 15 01 	sts	0x0115, r1	; 0x800115 <opmode+0x1>
- 2cc:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <opmode>
+ 2a4:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <__data_end>
+ 2a8:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <__data_end+0x1>
+ 2ac:	03 97       	sbiw	r24, 0x03	; 3
+ 2ae:	24 f0       	brlt	.+8      	; 0x2b8 <__vector_5+0x34>
+ 2b0:	10 92 13 01 	sts	0x0113, r1	; 0x800113 <__data_end+0x1>
+ 2b4:	10 92 12 01 	sts	0x0112, r1	; 0x800112 <__data_end>
 }
- 2d0:	9f 91       	pop	r25
- 2d2:	8f 91       	pop	r24
- 2d4:	0f 90       	pop	r0
- 2d6:	0f be       	out	0x3f, r0	; 63
- 2d8:	0f 90       	pop	r0
- 2da:	1f 90       	pop	r1
- 2dc:	18 95       	reti
+ 2b8:	9f 91       	pop	r25
+ 2ba:	8f 91       	pop	r24
+ 2bc:	0f 90       	pop	r0
+ 2be:	0f be       	out	0x3f, r0	; 63
+ 2c0:	0f 90       	pop	r0
+ 2c2:	1f 90       	pop	r1
+ 2c4:	18 95       	reti
 
-000002de <__vector_6>:
-ISR(INT5_vect) // INT5 5번 인터럽트 처리 루틴 : sw2
+000002c6 <__vector_6>:
+ISR(INT5_vect) // INT5 5번 인터럽트 처리 루틴 : 버튼 2
 {
- 2de:	1f 92       	push	r1
- 2e0:	0f 92       	push	r0
- 2e2:	0f b6       	in	r0, 0x3f	; 63
- 2e4:	0f 92       	push	r0
- 2e6:	11 24       	eor	r1, r1
- 2e8:	8f 93       	push	r24
- 2ea:	9f 93       	push	r25
-	state++;
- 2ec:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <__data_end>
- 2f0:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <__data_end+0x1>
- 2f4:	01 96       	adiw	r24, 0x01	; 1
- 2f6:	90 93 13 01 	sts	0x0113, r25	; 0x800113 <__data_end+0x1>
- 2fa:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <__data_end>
-	if(state >= STATE_MAX) state = 0;
- 2fe:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <__data_end>
- 302:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <__data_end+0x1>
- 306:	03 97       	sbiw	r24, 0x03	; 3
- 308:	24 f0       	brlt	.+8      	; 0x312 <__vector_6+0x34>
- 30a:	10 92 13 01 	sts	0x0113, r1	; 0x800113 <__data_end+0x1>
- 30e:	10 92 12 01 	sts	0x0112, r1	; 0x800112 <__data_end>
+ 2c6:	1f 92       	push	r1
+ 2c8:	0f 92       	push	r0
+ 2ca:	0f b6       	in	r0, 0x3f	; 63
+ 2cc:	0f 92       	push	r0
+ 2ce:	11 24       	eor	r1, r1
+ 2d0:	8f 93       	push	r24
+ 2d2:	9f 93       	push	r25
+	if (opmode == 0) // 설정 상태에서만 타이머 설정 가능
+ 2d4:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <__data_end>
+ 2d8:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <__data_end+0x1>
+ 2dc:	89 2b       	or	r24, r25
+ 2de:	39 f4       	brne	.+14     	; 0x2ee <__vector_6+0x28>
+	{
+		opmode = 1; // 카운터 시작
+ 2e0:	81 e0       	ldi	r24, 0x01	; 1
+ 2e2:	90 e0       	ldi	r25, 0x00	; 0
+ 2e4:	90 93 13 01 	sts	0x0113, r25	; 0x800113 <__data_end+0x1>
+ 2e8:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <__data_end>
+ 2ec:	0c c0       	rjmp	.+24     	; 0x306 <__vector_6+0x40>
+	}
+	else if (opmode == 1) // 카운터 진행 중이면 카운터를 멈춤
+ 2ee:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <__data_end>
+ 2f2:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <__data_end+0x1>
+ 2f6:	01 97       	sbiw	r24, 0x01	; 1
+ 2f8:	31 f4       	brne	.+12     	; 0x306 <__vector_6+0x40>
+	{
+		opmode = 2; // 카운터 종료
+ 2fa:	82 e0       	ldi	r24, 0x02	; 2
+ 2fc:	90 e0       	ldi	r25, 0x00	; 0
+ 2fe:	90 93 13 01 	sts	0x0113, r25	; 0x800113 <__data_end+0x1>
+ 302:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <__data_end>
+	}
 }
- 312:	9f 91       	pop	r25
- 314:	8f 91       	pop	r24
- 316:	0f 90       	pop	r0
- 318:	0f be       	out	0x3f, r0	; 63
- 31a:	0f 90       	pop	r0
- 31c:	1f 90       	pop	r1
- 31e:	18 95       	reti
+ 306:	9f 91       	pop	r25
+ 308:	8f 91       	pop	r24
+ 30a:	0f 90       	pop	r0
+ 30c:	0f be       	out	0x3f, r0	; 63
+ 30e:	0f 90       	pop	r0
+ 310:	1f 90       	pop	r1
+ 312:	18 95       	reti
 
-00000320 <__vector_7>:
-ISR(INT6_vect) // INT5 6번 인터럽트 처리 루틴 : sw3
+00000314 <__vector_7>:
+ISR(INT6_vect) // INT6 6번 인터럽트 처리 루틴 : 버튼 3
 {
- 320:	1f 92       	push	r1
- 322:	0f 92       	push	r0
- 324:	0f b6       	in	r0, 0x3f	; 63
- 326:	0f 92       	push	r0
- 328:	11 24       	eor	r1, r1
-	
+ 314:	1f 92       	push	r1
+ 316:	0f 92       	push	r0
+ 318:	0f b6       	in	r0, 0x3f	; 63
+ 31a:	0f 92       	push	r0
+ 31c:	11 24       	eor	r1, r1
+	opmode = 0; // 설정 초기화
+ 31e:	10 92 13 01 	sts	0x0113, r1	; 0x800113 <__data_end+0x1>
+ 322:	10 92 12 01 	sts	0x0112, r1	; 0x800112 <__data_end>
+}
+ 326:	0f 90       	pop	r0
+ 328:	0f be       	out	0x3f, r0	; 63
  32a:	0f 90       	pop	r0
- 32c:	0f be       	out	0x3f, r0	; 63
- 32e:	0f 90       	pop	r0
- 330:	1f 90       	pop	r1
- 332:	18 95       	reti
+ 32c:	1f 90       	pop	r1
+ 32e:	18 95       	reti
 
-00000334 <_exit>:
- 334:	f8 94       	cli
+00000330 <_exit>:
+ 330:	f8 94       	cli
 
-00000336 <__stop_program>:
- 336:	ff cf       	rjmp	.-2      	; 0x336 <__stop_program>
+00000332 <__stop_program>:
+ 332:	ff cf       	rjmp	.-2      	; 0x332 <__stop_program>
